@@ -2,9 +2,9 @@ package tree
 
 import "errors"
 
-// Tree is the base tree type in a binomial heap
-type Tree struct {
-	child, sibling, parent *Tree
+// BinomialTree is the base tree type in a BinomialHeap
+type BinomialTree struct {
+	child, sibling, parent *BinomialTree
 	degree                 int
 	value                  int
 }
@@ -12,12 +12,12 @@ type Tree struct {
 // Merge two binomial trees according to standard merge algorithm
 // 1. add the lower priority tree as a child of the higher priority tree
 // 2. increment the degree
-func Merge(p *Tree, q *Tree) (*Tree, error) {
+func Merge(p *BinomialTree, q *BinomialTree) (*BinomialTree, error) {
 	if p.degree != q.degree {
-		return &Tree{}, errors.New("Merged trees must be of the same degree")
+		return &BinomialTree{}, errors.New("Merged trees must be of the same degree")
 	}
 
-	var parent, child *Tree
+	var parent, child *BinomialTree
 
 	if p.value < q.value {
 		parent = p
@@ -37,19 +37,19 @@ func Merge(p *Tree, q *Tree) (*Tree, error) {
 // pops the min (head) value from the tree
 // returns the head as a single node tree,
 // and a slice of trees that were its children
-func popMin(head *Tree) (*Tree, []*Tree) {
+func popMin(head *BinomialTree) (*BinomialTree, []*BinomialTree) {
 	if head.degree == 0 {
 		return head, nil
 	}
-	// the number of children that a node has is always the same as its degree
+	// numder of children is always the same as degree
 	size := head.degree
 
 	// move each of the children into the slice,
 	// while setting their pointers to nil
-	// since they will funciton as independent trees
+	// since they will function as independent trees
 	// add them in reverse order so they will
 	// appear in increasing degree order in the resulting array
-	children := make([]*Tree, size)
+	children := make([]*BinomialTree, size)
 	child := head.child
 	i := size - 1
 	for child != nil {

@@ -3,7 +3,7 @@ package tree
 import "testing"
 
 func TestCreation(t *testing.T) {
-	a := &Tree{value: 55, degree: 0}
+	a := &BinomialTree{value: 55, degree: 0}
 	if a.value != 55 {
 		t.Error("incorrect inital value set")
 	}
@@ -13,8 +13,8 @@ func TestCreation(t *testing.T) {
 }
 
 func TestMerge(t *testing.T) {
-	a := &Tree{value: 1}
-	b := &Tree{value: 2}
+	a := &BinomialTree{value: 1}
+	b := &BinomialTree{value: 2}
 	merged, err := Merge(a, b)
 	if err != nil {
 		t.Error("error when merging", err)
@@ -37,8 +37,8 @@ func TestMerge(t *testing.T) {
 }
 
 func TestMergeFail(t *testing.T) {
-	a := &Tree{value: 1, degree: 0}
-	b := &Tree{value: 2, degree: 1}
+	a := &BinomialTree{value: 1, degree: 0}
+	b := &BinomialTree{value: 2, degree: 1}
 
 	_, err2 := Merge(a, b)
 	if err2 == nil {
@@ -47,12 +47,12 @@ func TestMergeFail(t *testing.T) {
 }
 
 func TestMergeWithChildren(t *testing.T) {
-	a := &Tree{value: 1}
-	b := &Tree{value: 2}
+	a := &BinomialTree{value: 1}
+	b := &BinomialTree{value: 2}
 	c, _ := Merge(a, b)
 
-	x := &Tree{value: 3}
-	y := &Tree{value: 4}
+	x := &BinomialTree{value: 3}
+	y := &BinomialTree{value: 4}
 	z, _ := Merge(x, y)
 
 	head, _ := Merge(z, c)
@@ -75,21 +75,21 @@ func TestMergeWithChildren(t *testing.T) {
 }
 
 func TestPopMin(t *testing.T) {
-	a := &Tree{value: 1}
-	b := &Tree{value: 2}
+	a := &BinomialTree{value: 1}
+	b := &BinomialTree{value: 2}
 	c, _ := Merge(a, b)
 
-	d := &Tree{value: 3}
-	e := &Tree{value: 4}
+	d := &BinomialTree{value: 3}
+	e := &BinomialTree{value: 4}
 	f, _ := Merge(d, e)
 
 	g, _ := Merge(c, f)
 
-	s := &Tree{value: 5}
-	u := &Tree{value: 6}
+	s := &BinomialTree{value: 5}
+	u := &BinomialTree{value: 6}
 	v, _ := Merge(s, u)
-	w := &Tree{value: 7}
-	x := &Tree{value: 8}
+	w := &BinomialTree{value: 7}
+	x := &BinomialTree{value: 8}
 	y, _ := Merge(w, x)
 
 	z, _ := Merge(v, y)
