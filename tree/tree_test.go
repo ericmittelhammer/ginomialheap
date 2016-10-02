@@ -45,3 +45,31 @@ func TestMergeFail(t *testing.T) {
 		t.Error("Error expected. should not be able to merge trees of different degrees.")
 	}
 }
+
+func TestMergeWithChildren(t *testing.T) {
+	a := &Tree{value: 1}
+	b := &Tree{value: 2}
+	c, _ := Merge(a, b)
+
+	x := &Tree{value: 3}
+	y := &Tree{value: 4}
+	z, _ := Merge(x, y)
+
+	head, _ := Merge(z, c)
+
+	if head != a {
+		t.Error("priority not preserved in merge")
+	}
+
+	if !(head.child == x && head.child.child == y) {
+		t.Error("children not set correctly in merge")
+	}
+
+	if !(head.child.sibling == b && head.child.sibling.sibling == nil) {
+		t.Error("siblings not set correctly during merge")
+	}
+
+	if !(head.child.child.parent == head.child && head.child.parent == head && head.child.sibling.parent == head) {
+		t.Error("parents not set correclty during merge")
+	}
+}

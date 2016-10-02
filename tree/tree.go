@@ -9,7 +9,7 @@ type Tree struct {
 	value                  int
 }
 
-// Merge two binomial trees according to standard merge logic
+// Merge two binomial trees according to standard merge algorithm
 // add the lower priority tree as a child of the higher priority tree
 // and increment the degree
 func Merge(p *Tree, q *Tree) (*Tree, error) {
