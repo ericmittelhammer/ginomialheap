@@ -73,3 +73,57 @@ func TestMergeWithChildren(t *testing.T) {
 		t.Error("parents not set correclty during merge")
 	}
 }
+
+func TestPopMin(t *testing.T) {
+	a := &Tree{value: 1}
+	b := &Tree{value: 2}
+	c, _ := Merge(a, b)
+
+	d := &Tree{value: 3}
+	e := &Tree{value: 4}
+	f, _ := Merge(d, e)
+
+	g, _ := Merge(c, f)
+
+	s := &Tree{value: 5}
+	u := &Tree{value: 6}
+	v, _ := Merge(s, u)
+	w := &Tree{value: 7}
+	x := &Tree{value: 8}
+	y, _ := Merge(w, x)
+
+	z, _ := Merge(v, y)
+
+	tree, _ := Merge(g, z)
+
+	min, children := popMin(tree)
+
+	if min.value != 1 {
+		t.Error("min val was not popped")
+	}
+
+	if !(min.child == nil && min.sibling == nil) {
+		t.Error("head pointers were not nilled correctly")
+	}
+
+	if min.degree != 0 {
+		t.Error("head degree not set to 0")
+	}
+
+	if len(children) != 3 {
+		t.Error("wrong number of children returned")
+	}
+
+	i := 0
+	for i < len(children) {
+		child := children[i]
+		if child.degree != i {
+			t.Error("children not added in degree order")
+		}
+		if !(child.parent == nil && child.sibling == nil) {
+			t.Error("children pointers not correctly set to nil")
+		}
+		i = i + 1
+	}
+
+}
