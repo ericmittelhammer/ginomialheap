@@ -74,7 +74,7 @@ func TestMergeWithChildren(t *testing.T) {
 	}
 }
 
-func TestPopMin(t *testing.T) {
+func TestDetatchHead(t *testing.T) {
 	a := &BinomialTree{value: 1}
 	b := &BinomialTree{value: 2}
 	c, _ := Merge(a, b)
@@ -96,7 +96,7 @@ func TestPopMin(t *testing.T) {
 
 	tree, _ := Merge(g, z)
 
-	min, children := popMin(tree)
+	min, children := detatchHead(tree)
 
 	if min.value != 1 {
 		t.Error("min val was not popped")

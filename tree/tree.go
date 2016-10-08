@@ -34,10 +34,10 @@ func Merge(p *BinomialTree, q *BinomialTree) (*BinomialTree, error) {
 	return parent, nil
 }
 
-// pops the min (head) value from the tree
-// returns the head as a single node tree,
+// pops the head value from the tree
+// returns it as a single node tree,
 // and a slice of trees that were its children
-func popMin(head *BinomialTree) (*BinomialTree, []*BinomialTree) {
+func detatchHead(head *BinomialTree) (*BinomialTree, []*BinomialTree) {
 	if head.degree == 0 {
 		return head, nil
 	}
