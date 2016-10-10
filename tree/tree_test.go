@@ -3,42 +3,42 @@ package tree
 import "testing"
 
 func TestCreation(t *testing.T) {
-	a := &BinomialTree{value: 55, degree: 0}
-	if a.value != 55 {
+	a := &BinomialTree{Value: 55, Degree: 0}
+	if a.Value != 55 {
 		t.Error("incorrect inital value set")
 	}
-	if a.degree != 0 {
+	if a.Degree != 0 {
 		t.Error("incorrect initial degree set")
 	}
 }
 
 func TestMerge(t *testing.T) {
-	a := &BinomialTree{value: 1}
-	b := &BinomialTree{value: 2}
+	a := &BinomialTree{Value: 1}
+	b := &BinomialTree{Value: 2}
 	merged, err := Merge(a, b)
 	if err != nil {
 		t.Error("error when merging", err)
 	}
-	if merged.value != 1 {
+	if merged.Value != 1 {
 		t.Error("expected min value at head after merge")
 	}
 	if merged != a {
 		t.Error("incorrect merge")
 	}
-	if merged.child.value != 2 {
+	if merged.Child.Value != 2 {
 		t.Error("expected lower priority child value after merge")
 	}
-	if merged.child != b {
+	if merged.Child != b {
 		t.Error("incorrect merge")
 	}
-	if merged.child.parent != a {
+	if merged.Child.Parent != a {
 		t.Error("incorrect parent pointer")
 	}
 }
 
 func TestMergeFail(t *testing.T) {
-	a := &BinomialTree{value: 1, degree: 0}
-	b := &BinomialTree{value: 2, degree: 1}
+	a := &BinomialTree{Value: 1, Degree: 0}
+	b := &BinomialTree{Value: 2, Degree: 1}
 
 	_, err2 := Merge(a, b)
 	if err2 == nil {
@@ -47,12 +47,12 @@ func TestMergeFail(t *testing.T) {
 }
 
 func TestMergeWithChildren(t *testing.T) {
-	a := &BinomialTree{value: 1}
-	b := &BinomialTree{value: 2}
+	a := &BinomialTree{Value: 1}
+	b := &BinomialTree{Value: 2}
 	c, _ := Merge(a, b)
 
-	x := &BinomialTree{value: 3}
-	y := &BinomialTree{value: 4}
+	x := &BinomialTree{Value: 3}
+	y := &BinomialTree{Value: 4}
 	z, _ := Merge(x, y)
 
 	head, _ := Merge(z, c)
@@ -61,35 +61,35 @@ func TestMergeWithChildren(t *testing.T) {
 		t.Error("priority not preserved in merge")
 	}
 
-	if !(head.child == x && head.child.child == y) {
+	if !(head.Child == x && head.Child.Child == y) {
 		t.Error("children not set correctly in merge")
 	}
 
-	if !(head.child.sibling == b && head.child.sibling.sibling == nil) {
+	if !(head.Child.Sibling == b && head.Child.Sibling.Sibling == nil) {
 		t.Error("siblings not set correctly during merge")
 	}
 
-	if !(head.child.child.parent == head.child && head.child.parent == head && head.child.sibling.parent == head) {
+	if !(head.Child.Child.Parent == head.Child && head.Child.Parent == head && head.Child.Sibling.Parent == head) {
 		t.Error("parents not set correclty during merge")
 	}
 }
 
 func TestDetatchHead(t *testing.T) {
-	a := &BinomialTree{value: 1}
-	b := &BinomialTree{value: 2}
+	a := &BinomialTree{Value: 1}
+	b := &BinomialTree{Value: 2}
 	c, _ := Merge(a, b)
 
-	d := &BinomialTree{value: 3}
-	e := &BinomialTree{value: 4}
+	d := &BinomialTree{Value: 3}
+	e := &BinomialTree{Value: 4}
 	f, _ := Merge(d, e)
 
 	g, _ := Merge(c, f)
 
-	s := &BinomialTree{value: 5}
-	u := &BinomialTree{value: 6}
+	s := &BinomialTree{Value: 5}
+	u := &BinomialTree{Value: 6}
 	v, _ := Merge(s, u)
-	w := &BinomialTree{value: 7}
-	x := &BinomialTree{value: 8}
+	w := &BinomialTree{Value: 7}
+	x := &BinomialTree{Value: 8}
 	y, _ := Merge(w, x)
 
 	z, _ := Merge(v, y)
@@ -98,15 +98,15 @@ func TestDetatchHead(t *testing.T) {
 
 	min, children := detatchHead(tree)
 
-	if min.value != 1 {
+	if min.Value != 1 {
 		t.Error("min val was not popped")
 	}
 
-	if !(min.child == nil && min.sibling == nil) {
+	if !(min.Child == nil && min.Sibling == nil) {
 		t.Error("head pointers were not nilled correctly")
 	}
 
-	if min.degree != 0 {
+	if min.Degree != 0 {
 		t.Error("head degree not set to 0")
 	}
 
@@ -117,10 +117,10 @@ func TestDetatchHead(t *testing.T) {
 	i := 0
 	for i < len(children) {
 		child := children[i]
-		if child.degree != i {
+		if child.Degree != i {
 			t.Error("children not added in degree order")
 		}
-		if !(child.parent == nil && child.sibling == nil) {
+		if !(child.Parent == nil && child.Sibling == nil) {
 			t.Error("children pointers not correctly set to nil")
 		}
 		i = i + 1
