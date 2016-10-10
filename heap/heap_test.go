@@ -3,13 +3,13 @@ package heap
 import "testing"
 
 func TestCreate(t *testing.T) {
-	heap := Create(5)
+	heap := Create()
 
-	if heap.Head.Value != 5 {
+	if heap.Head != nil {
 		t.Error("Heap Head incorrectly set")
 	}
 
-	if heap.Min != heap.Head {
+	if heap.Min != nil {
 		t.Error("Heap Min incorrectly set")
 	}
 }

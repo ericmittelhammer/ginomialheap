@@ -16,7 +16,7 @@ type BinomialHeap struct {
 //      if the tail is of the same degree, merge as well
 // 2. h1 and h2 have different degrees. choose the smaller and add
 //      to tail, unless tail is of the same degree, in which case merge
-func AttachTo(tail *tree.BinomialTree, h1 *tree.BinomialTree, h2 *tree.BinomialTree) {
+func attachTo(tail *tree.BinomialTree, h1 *tree.BinomialTree, h2 *tree.BinomialTree) {
 	if h1 == nil {
 		tail.Sibling = h2
 	} else if h2 == nil {
@@ -34,7 +34,7 @@ func AttachTo(tail *tree.BinomialTree, h1 *tree.BinomialTree, h2 *tree.BinomialT
 		} else {
 			tail.Sibling = merged
 		}
-		AttachTo(tail, h1tail, h2tail)
+		attachTo(tail, h1tail, h2tail)
 	} else {
 		var toAttach *tree.BinomialTree
 		if h1.Degree < h2.Degree {
@@ -53,14 +53,14 @@ func AttachTo(tail *tree.BinomialTree, h1 *tree.BinomialTree, h2 *tree.BinomialT
 		} else {
 			tail.Sibling = toAttach
 		}
-		AttachTo(tail, h1, h2)
+		attachTo(tail, h1, h2)
 	}
 }
 
 // merge two heaps according to the merge algorithm
 // choose the lowest degree tree between the head of the two heaps
 // merging trees when there are more than one of the same rank.
-func Merge(heap1 *BinomialHeap, heap2 *BinomialHeap) *BinomialHeap {
+func merge(heap1 *BinomialHeap, heap2 *BinomialHeap) *BinomialHeap {
 	var min *tree.BinomialTree
 	if heap1.Min.Value < heap2.Min.Value {
 		min = heap1.Min
@@ -68,11 +68,11 @@ func Merge(heap1 *BinomialHeap, heap2 *BinomialHeap) *BinomialHeap {
 		min = heap2.Min
 	}
 	result := &BinomialHeap{Head: nil, Min: min}
-	AttachTo(result.Head, heap1.Head, heap2.Head)
+	attachTo(result.Head, heap1.Head, heap2.Head)
 	return result
 }
 
-func Create(initVal int) *BinomialHeap {
-    t := &tree.BinomialTree{Value: initVal, Degree: 0}
-    return &BinomialHeap{Head: t, Min: t}
+// Create an empty heap
+func Create() *BinomialHeap {
+	return &BinomialHeap{}
 }
