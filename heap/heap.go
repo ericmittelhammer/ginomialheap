@@ -4,10 +4,10 @@ import "github.com/ericmittelhammer/ginomialheap/tree"
 
 type BinomialHeap struct {
 	// head of the heap.  will be the tree with the lowest degree in the heap
-	head *tree.BinomialTree
+	Head *tree.BinomialTree
 	// shortcut pointer to the tree with the smallest head element.
 	// ensures O(1) lookup
-	min *tree.BinomialTree
+	Min *tree.BinomialTree
 }
 
 // utility method used to build the new heap
@@ -62,12 +62,17 @@ func AttachTo(tail *tree.BinomialTree, h1 *tree.BinomialTree, h2 *tree.BinomialT
 // merging trees when there are more than one of the same rank.
 func Merge(heap1 *BinomialHeap, heap2 *BinomialHeap) *BinomialHeap {
 	var min *tree.BinomialTree
-	if heap1.min.Value < heap2.min.Value {
-		min = heap1.min
+	if heap1.Min.Value < heap2.Min.Value {
+		min = heap1.Min
 	} else {
-		min = heap2.min
+		min = heap2.Min
 	}
-	result := &BinomialHeap{head: nil, min: min}
-	AttachTo(result.head, heap1.head, heap2.head)
+	result := &BinomialHeap{Head: nil, Min: min}
+	AttachTo(result.Head, heap1.Head, heap2.Head)
 	return result
+}
+
+func Create(initVal int) *BinomialHeap {
+    t := &tree.BinomialTree{Value: initVal, Degree: 0}
+    return &BinomialHeap{Head: t, Min: t}
 }
