@@ -78,12 +78,12 @@ func TestMergeWithChildren(t *testing.T) {
 		t.Error("priority not preserved in merge")
 	}
 
-	if !(head.FirstChild == x && head.FirstChild.FirstChild == y) {
+	if !(head.FirstChild == b) {
 		t.Error("children not set correctly in merge")
 	}
 
-	if !(head.FirstChild.Next == b && head.FirstChild.Next.Next == nil) {
-		t.Error("siblings not set correctly during merge")
+	if !(head.FirstChild.Next == x) {
+		t.Error("child tree not added after higest order")
 	}
 
 	// if !(head.Child.Child.Parent == head.Child && head.Child.Parent == head && head.Child.Sibling.Parent == head) {
@@ -123,7 +123,7 @@ func TestDetatchHead(t *testing.T) {
 		t.Error("head degree not set to 0")
 	}
 
-	if firstChild != s {
+	if firstChild != b {
 		t.Error("did not return FirstChild")
 	}
 

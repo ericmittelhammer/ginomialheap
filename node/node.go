@@ -31,9 +31,19 @@ func Merge(p *Node, q *Node) (*Node, error) {
 		child = p
 	}
 
-	child.Next = parent.FirstChild
+	cur := parent.FirstChild
+	if cur == nil { // there are no children yet
+		parent.FirstChild = child
+	} else {
+		// FirstChild always points to the lowest-order child.
+		// the added child tree will be the highest order child.
+		// traverse to the last child and add there
+		for cur.Next != nil {
+			cur = cur.Next
+		}
+		cur.Next = child
+	}
 	//child.Parent = parent
-	parent.FirstChild = child
 	parent.Degree = parent.Degree + 1
 	return parent, nil
 }
