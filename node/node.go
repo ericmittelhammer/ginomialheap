@@ -15,6 +15,7 @@ type Node struct {
 // 1. add the lower priority tree as a child of the higher priority tree
 // 2. increment the degree
 // Returns the node that is now at the head of this tree
+// Preserve pointer to first tree if they have equvalent values
 func Merge(p *Node, q *Node) (*Node, error) {
 	if p.Degree != q.Degree {
 		return nil, errors.New("Merged trees must be of the same degree")
@@ -22,7 +23,7 @@ func Merge(p *Node, q *Node) (*Node, error) {
 
 	var parent, child *Node
 
-	if p.Value < q.Value {
+	if p.Value <= q.Value {
 		parent = p
 		child = q
 	} else {

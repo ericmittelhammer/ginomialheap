@@ -36,6 +36,23 @@ func TestMerge(t *testing.T) {
 	// }
 }
 
+func TestMergeEquiv(t *testing.T) {
+	a := &Node{Value: 2}
+	b := &Node{Value: 2}
+	merged, _ := Merge(a, b)
+
+	if merged != a {
+		t.Error("Arguemt ordering not preserved")
+	}
+
+	if merged.FirstChild != b {
+		t.Error("Arguemt ordering not preserved")
+	}
+	// if merged.Child.Parent != a {
+	// 	t.Error("incorrect parent pointer")
+	// }
+}
+
 func TestMergeFail(t *testing.T) {
 	a := &Node{Value: 1, Degree: 0}
 	b := &Node{Value: 2, Degree: 1}
