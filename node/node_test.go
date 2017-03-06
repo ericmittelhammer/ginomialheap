@@ -1,13 +1,15 @@
 package node
 
-import "testing"
-
-import "math/rand"
+import (
+	"log"
+	"math/rand"
+	"testing"
+)
 
 func MakeNode(degree int) *Node {
 
 	if degree == 0 {
-		val := rand.Int()
+		val := rand.Intn(10000)
 		return &Node{Value: val, Degree: 0}
 	}
 
@@ -142,6 +144,30 @@ func TestDetatchHead(t *testing.T) {
 		t.Error("did not return FirstChild")
 	}
 
+}
+func isTree(n *Node) {
+	children, err := n.detatchHead()
+	if err != nil {
+		log.Fatal(err)
+	}
+	iter := children
+	for iter != nil {
+		cur := iter
+		if n.Value > cur.Value {
+			log.Fatal("parent value ", n.Value, "greater than child value", cur.Value)
+		}
+		iter = cur.Next
+		cur.Next = nil
+		isTree(cur)
+	}
+}
+
+func TestTreeSpec(t *testing.T) {
+	for i := 0; i < 100; i++ {
+		degree := rand.Intn(10) // test trees up to degree 10 (1024 nodes)
+		n := MakeNode(degree)
+		isTree(n)
+	}
 }
 
 func TestUnion(t *testing.T) {

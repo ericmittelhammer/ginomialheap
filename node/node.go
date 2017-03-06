@@ -93,7 +93,7 @@ func (head *Node) detatchHead() (*Node, error) {
 		return nil, errors.New("head.Next != nil.  This node is either in a heap or is a subtree.  Can only detach top-level trees after they have been removed from the heap")
 	}
 	if head.Degree == 0 {
-		return head, nil
+		return nil, nil
 	}
 
 	child := head.FirstChild
