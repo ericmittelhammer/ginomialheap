@@ -36,8 +36,8 @@ func Merge(p *Node, q *Node) (*Node, error) {
 		parent.FirstChild = child
 	} else {
 		// FirstChild always points to the lowest-order child.
-		// the added child tree will be the highest order child.
-		// traverse to the last child and add there
+		// The added child tree will be the highest order child.
+		// Traverse to the last child and add there.
 		for cur.Next != nil {
 			cur = cur.Next
 		}
@@ -46,6 +46,43 @@ func Merge(p *Node, q *Node) (*Node, error) {
 	//child.Parent = parent
 	parent.Degree = parent.Degree + 1
 	return parent, nil
+}
+
+// Union will "weave" two linked lists of Nodes (Binomial Heaps) together, in order
+func Union(p *Node, q *Node) *Node {
+	if p.Degree < q.Degree { // p has the lesser degree
+		if p.Next == nil { // it was the only element in it's list
+			p.Next = q // just push it on to the front of q and we're done
+		} else {
+			pTail := p.Next
+			p.Next = Union(pTail, q) // p is the head, recursively process the rest of the two lists
+		}
+		return p
+	} else if q.Degree < p.Degree { // same as above, only with q
+		if q.Next == nil {
+			q.Next = p
+		} else {
+			qTail := q.Next
+			q.Next = Union(p, qTail)
+		}
+		return q
+	} else { // both are the same
+		// pop both off of their lists
+		pTail := p.Next
+		p.Next = nil
+		qTail := q.Next
+		q.Next = nil
+		newHead, _ := Merge(p, q) // and merge them.
+		if pTail == nil {         // p is empty, but newHead could have the same degree as qTail, so Union them again.
+			return Union(newHead, qTail)
+		} else if qTail == nil { // same for q
+			return Union(pTail, newHead)
+		} else { // either BOTH pTail and qTail have the same degree, or neither do. In either case we just save newHead and recur
+			newHead.Next = Union(pTail, qTail)
+			return newHead
+		}
+	}
+
 }
 
 // pops the head value from the tree

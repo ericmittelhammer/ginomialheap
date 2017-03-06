@@ -2,6 +2,21 @@ package node
 
 import "testing"
 
+import "math/rand"
+
+func MakeNode(degree int) *Node {
+
+	if degree == 0 {
+		val := rand.Int()
+		return &Node{Value: val, Degree: 0}
+	}
+
+	node1 := MakeNode(degree - 1)
+	node2 := MakeNode(degree - 1)
+	res, _ := Merge(node1, node2)
+	return res
+}
+
 func TestCreation(t *testing.T) {
 	a := &Node{Value: 55, Degree: 0}
 	if a.Value != 55 {
@@ -127,4 +142,49 @@ func TestDetatchHead(t *testing.T) {
 		t.Error("did not return FirstChild")
 	}
 
+}
+
+func TestUnion(t *testing.T) {
+	// create two heaps.
+
+	// 0 -> 3
+	zero := &Node{Value: 5}
+
+	one, _ := Merge(&Node{Value: 10}, &Node{Value: 11})
+
+	twoInner1, _ := Merge(&Node{Value: 15}, &Node{Value: 16})
+	twoInner2, _ := Merge(&Node{Value: 17}, &Node{Value: 18})
+	two, err := Merge(twoInner1, twoInner2)
+	if err != nil {
+		t.Log(err)
+	}
+
+	// three := &Node{Value: 5}
+	// for i := 0; i < 7; i++ {
+	// 	val := rand.Int() + 5
+	// 	three, _ = Merge(three, &Node{Value: val})
+	// }
+
+	zero.Next = two
+
+	//one.Next = three
+
+	result := Union(zero, one)
+
+	count := 0
+	lastDegree := -1
+
+	cur := result
+	for cur != nil {
+		if cur.Degree <= lastDegree {
+			t.Error("Degrees out of order")
+		}
+		count = count + 1
+		lastDegree = cur.Degree
+		cur = cur.Next
+	}
+
+	if count != 3 {
+		t.Error("Expected 3 nodes to be in result. Instead there were", count, result)
+	}
 }
