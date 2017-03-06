@@ -170,7 +170,7 @@ func TestTreeSpec(t *testing.T) {
 	}
 }
 
-func TestUnion(t *testing.T) {
+func TestUnionManual(t *testing.T) {
 	// create two heaps.
 
 	// 0 -> 3
@@ -213,4 +213,44 @@ func TestUnion(t *testing.T) {
 	if count != 3 {
 		t.Error("Expected 3 nodes to be in result. Instead there were", count, result)
 	}
+}
+
+func TestUnionGenerated(t *testing.T) {
+
+	for i := 0; i < 10; i++ {
+
+		list1HighestDeg := rand.Intn(2)
+		list1Head := MakeNode(list1HighestDeg)
+		list1Last := list1Head
+
+		for list1HighestDeg <= 12 {
+			list1HighestDeg += 1 + rand.Intn(2)
+			newNode := MakeNode(list1HighestDeg)
+			list1Last.Next = newNode
+			list1Last = newNode
+		}
+
+		list2HighestDeg := rand.Intn(2)
+		list2Head := MakeNode(list1HighestDeg)
+		list2Last := list1Head
+
+		for list2HighestDeg <= 12 {
+			list2HighestDeg += 1 + rand.Intn(2)
+			newNode := MakeNode(list1HighestDeg)
+			list2Last.Next = newNode
+			list2Last = newNode
+		}
+
+		result := Union(list1Head, list2Head)
+
+		lastDegree := -1
+		cur := result
+		for cur != nil {
+			if cur.Degree <= lastDegree {
+				t.Error("Degrees out of order")
+			}
+			cur = cur.Next
+		}
+	}
+
 }
